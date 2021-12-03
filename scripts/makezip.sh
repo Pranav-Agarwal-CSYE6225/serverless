@@ -1,3 +1,4 @@
+#!/bin/bash
 bucket_name=$1
 aws_key=$2
 aws_access_key=$3
@@ -8,8 +9,7 @@ local_path=$5
 rm -rf $local_path
 echo $(ls)
 # Create a zip of the current directory.
-zip -r $local_path index.js config.json
-
+zip -r $local_path index.js config.json 
 # Install required dependencies for Python script.
 pip3 install boto3==1.19.12
 
