@@ -16,7 +16,7 @@ exports.handler = (event, context, callback) => {
     mainFunction();
 
     function sendEmail() {
-        var sender = "admin@prod.nishokkannan.me"
+        var sender = "admin@prod.pranav-agarwal.me"
         
         var to_address = JSON.parse(event.Records[0].Sns.Message).email;
         var accestokem = JSON.parse(event.Records[0].Sns.Message).token;
@@ -37,8 +37,8 @@ exports.handler = (event, context, callback) => {
                                 '</head><body>' +
                                 'This is the link to verify your account this link is valid for five minutes.' +
                                 '<br><br>' +
-                                "<a href=\"http://" + "prod.nishokkannan.me" + "/v1/verifyUserEmail?email=" + to_address + "&token=" + accestokem + "\">" +
-                                "http://" + "prod.nishokkannan.me" + "/v1/verifyUserEmail?email=" + to_address + "&token=" + accestokem + "</a>"
+                                "<a href=\"http://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + accestokem + "\">" +
+                                "http://" + "prod.pranav-agarwal.me" + "/v1/verifyUserEmail?email=" + to_address + "&token=" + accestokem + "</a>"
                                 +'</body></html>'
                         }
                     },
