@@ -4,8 +4,6 @@ var ses = new AWS.SES({
 });
 
 exports.handler = (event, context, callback) => {
-    // console.log(event.Records[0].Sns);
-    // var event_data = [JSON.parse(event).message];
     
     console.log("SNS Data===========>"+JSON.stringify(event));
     
@@ -19,7 +17,7 @@ exports.handler = (event, context, callback) => {
         var sender = "admin@prod.pranav-agarwal.me"
         
         var to_address = JSON.parse(event.Records[0].Sns.Message).email;
-        var accestokem = JSON.parse(event.Records[0].Sns.Message).token;
+        var accesstoken = JSON.parse(event.Records[0].Sns.Message).token;
 
 
         return new Promise(function (resolve, reject) {
@@ -33,17 +31,17 @@ exports.handler = (event, context, callback) => {
                             //Data: links
                             Data: '<html><head>' +
                                 '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' +
-                                '<title>' + "Verification Email" + '</title>' +
+                                '<title>' + "Email to verify user account" + '</title>' +
                                 '</head><body>' +
-                                'This is the link to verify your account this link is valid for five minutes.' +
+                                'click this link to verify your email. This link is valid for two minutes.' +
                                 '<br><br>' +
-                                "<a href=\"http://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + accestokem + "\">" +
-                                "http://" + "prod.pranav-agarwal.me" + "/v1/verifyUserEmail?email=" + to_address + "&token=" + accestokem + "</a>"
+                                "<a href=\"http://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + accesstoken + "\">" +
+                                "http://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + accesstoken + "</a>"
                                 +'</body></html>'
                         }
                     },
                     Subject: {
-                        Data: "Verification Email"
+                        Data: "Email to verify user account"
                     }
                 },
                 Source: sender
