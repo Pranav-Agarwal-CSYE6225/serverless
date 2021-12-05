@@ -29,6 +29,6 @@ jobs:
       run: |
         echo $(ls)
         aws lambda update-function-code \
-              --function-name  lambda_function_name \
+              --function-name  email_function \
               --zip-file fileb://serverless.zip \
               --region us-east-1
