@@ -35,8 +35,8 @@ exports.handler = (event, context, callback) => {
                                 '</head><body>' +
                                 'click this link to verify your email. This link is valid for two minutes.' +
                                 '<br><br>' +
-                                "<a href=\"http://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + accesstoken + "\">" +
-                                "http://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + accesstoken + "</a>"
+                                "<a href=\"https://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + accesstoken + "\">" +
+                                "https://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + accesstoken + "</a>"
                                 +'</body></html>'
                         }
                     },
