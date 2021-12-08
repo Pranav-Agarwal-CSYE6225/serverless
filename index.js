@@ -4,39 +4,32 @@ var ses = new AWS.SES({
 });
 
 exports.handler = (event, context, callback) => {
-    
-    console.log("SNS Data===========>"+JSON.stringify(event));
-    
-
-    async function mainFunction() {
-        sendEmail()
+    async function main() {
+        send()
     }
-    mainFunction();
-
-    function sendEmail() {
+    main();
+    function send() {
         var sender = "admin@prod.pranav-agarwal.me"
-        
         var to_address = JSON.parse(event.Records[0].Sns.Message).email;
-        var accesstoken = JSON.parse(event.Records[0].Sns.Message).token;
+        var token = JSON.parse(event.Records[0].Sns.Message).token;
 
 
         return new Promise(function (resolve, reject) {
-            var eParams = {
+            var params = {
                 Destination: {
                     ToAddresses: [to_address]
                 },
                 Message: {
                     Body: {
                         Html: {
-                            //Data: links
                             Data: '<html><head>' +
                                 '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' +
                                 '<title>' + "Email to verify user account" + '</title>' +
                                 '</head><body>' +
                                 'click this link to verify your email. This link is valid for two minutes.' +
                                 '<br><br>' +
-                                "<a href=\"https://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + accesstoken + "\">" +
-                                "https://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + accesstoken + "</a>"
+                                "<a href=\"https://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + token + "\">" +
+                                "https://" + "prod.pranav-agarwal.me" + "/v1/user/verifyUserEmail?email=" + to_address + "&token=" + token + "</a>"
                                 +'</body></html>'
                         }
                     },
@@ -46,12 +39,12 @@ exports.handler = (event, context, callback) => {
                 },
                 Source: sender
             };
-            ses.sendEmail(eParams, function (err, data2) {
+            ses.sendEmail(params, function (err, data) {
                 if (err) {
                     reject(new Error(err));
                 } else {
                     context.succeed(event);
-                    resolve(data2);
+                    resolve(data);
                 }
             });
         });
