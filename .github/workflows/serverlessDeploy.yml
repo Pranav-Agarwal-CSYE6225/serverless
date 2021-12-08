@@ -1,34 +1,44 @@
-name: Add File to Bucket
+name: deployCodeToServerless
 on:
   push:
     branches: [ main ]
-
 jobs:
-
   deploy:
     runs-on: ubuntu-latest
-    
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
     - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Create Deployment Artifact
+      run: |         
+        zip -r lambda index.js   
+        mkdir artifacts
+        mv lambda.zip artifacts
+        cd artifacts
 
-    - name: Check
-      run: |
-        echo $(ls)
-    - name: Release to S3
 
-      run: bash scripts/makezip.sh ${{ secrets.AWS_Bucket_Name }} "webapp.zip" ${{ secrets.AWS_Access_Key }} ${{ secrets.AWS_Access_Secret }} "serverless.zip"
-    
-    - uses: aws-actions/configure-aws-credentials@v1
+    - name: Configure AWS
+      uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_Access_Key }}
         aws-secret-access-key: ${{ secrets.AWS_Access_Secret }}
         aws-region: us-east-1
-
-    - name: Create CodeDeploy Deployment
+    - name: Push Artifact to S3
+      run: |
+        aws s3 sync ./deploySrcCode s3://${{secrets.AWS_Bucket_Name}}
+    - name: Call AWS Codedeploy
       id: deploy
       run: |
-        echo $(ls)
         aws lambda update-function-code \
               --function-name  email_function \
-              --zip-file fileb://serverless.zip \
-              --region us-east-1
+              --region us-east-1 \
+              --zip-file fileb://artifacts/lambda.zip \
+
+
+
+
