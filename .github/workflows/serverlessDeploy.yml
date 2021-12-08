@@ -30,7 +30,7 @@ jobs:
         aws-region: us-east-1
     - name: Push Artifact to S3
       run: |
-        aws s3 sync ./deploySrcCode s3://${{secrets.AWS_Bucket_Name}}
+        aws s3 sync ./artifacts s3://${{secrets.AWS_Bucket_Name}}
     - name: Call AWS Codedeploy
       id: deploy
       run: |
